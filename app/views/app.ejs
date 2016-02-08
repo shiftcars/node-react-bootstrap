@@ -11,6 +11,8 @@
 
 <% if (process.env.NODE_ENV !== 'production') { %>
     <script src="http://localhost:8090/webpack-dev-server.js"></script>
+<% } else { %>
+    <link rel="stylesheet" href="/js/styles.css">
 <% } %>
 
   </head>
