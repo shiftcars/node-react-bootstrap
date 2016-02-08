@@ -15,6 +15,7 @@ gulp.task("build", ["webpack:build"]);
 gulp.task("webpack:build", function(callback) {
   // modify some webpack config options
   var myConfig = Object.create(webpackConfig);
+  myConfig.devtool = 'source-map';
   myConfig.plugins = (myConfig.plugins || []).concat(
     new webpack.DefinePlugin({
       "process.env": {
@@ -22,8 +23,8 @@ gulp.task("webpack:build", function(callback) {
         "NODE_ENV": JSON.stringify("production")
       }
     }),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin()
+    new webpack.optimize.DedupePlugin()
+    // new webpack.optimize.UglifyJsPlugin()
   );
 
   // run webpack
@@ -39,21 +40,21 @@ gulp.task("webpack:build", function(callback) {
 gulp.task("webpack:dev-server", function(callback) {
   var WebpackDevServer = require("webpack-dev-server");
 
-	// modify some webpack config options
-	var myDevConfig = Object.create(webpackConfig);
+  // modify some webpack config options
+  var myDevConfig = Object.create(webpackConfig);
   myDevConfig.devtool = "sourcemap";
-	myDevConfig.debug = true;
+  myDevConfig.debug = true;
   myDevConfig.output.path = "/" + myDevConfig.output.path;
   myDevConfig.output.publicPath = 'http://localhost:8090' + myDevConfig.output.publicPath;
 
-	// Start a webpack-dev-server
-	new WebpackDevServer(webpack(myDevConfig), {
-		publicPath: myDevConfig.output.publicPath,
-		stats: {
+  // Start a webpack-dev-server
+  new WebpackDevServer(webpack(myDevConfig), {
+    publicPath: myDevConfig.output.publicPath,
+    stats: {
       colors: true,
       chunkModules: false
     }
-	}).listen(8090, "localhost", function(err) {
-		if(err) throw new gutil.PluginError("webpack-dev-server", err);
-	});
+  }).listen(8090, "localhost", function(err) {
+    if(err) throw new gutil.PluginError("webpack-dev-server", err);
+  });
 });
