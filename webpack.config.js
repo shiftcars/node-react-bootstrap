@@ -1,3 +1,11 @@
+'use strict';
+require('babel-loader');
+require('babel-preset-es2015');
+require('babel-preset-react');
+require('css-loader');
+require('style-loader');
+require('autoprefixer-loader');
+
 module.exports = {
   entry: {
     app: 'App'
@@ -10,14 +18,20 @@ module.exports = {
   },
   module: {
     loaders: [
-      {test: /\.js$/, loader: 'jsx-loader?harmony'},
-      {test: /zepto[a-z.]*.js/, loader: 'exports-loader?Zepto'},
+      {
+        test: /\.js$/,
+        loader: 'babel',
+        exclude: /(node_modules|bower_components)/,
+        query: {
+          presets: ['react', 'es2015'],
+        }
+      },
+      {test: /\.css/, loader: 'style!css!autoprefixer'},
       {test: require.resolve('react'), loader: 'expose?React' }
     ]
   },
   resolve: {
     alias: {
-      zepto$: 'vendor/zepto.min.js'
     },
     root: [__dirname + '/app/client_src']
   }

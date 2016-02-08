@@ -1,32 +1,31 @@
-var React = require('react');
-var ReactRouter = require('react-router');
-var IndexPage = require('pages/IndexPage');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Router, Route, IndexRoute, DefaultRoute, browserHistory } from 'react-router';
 
-var Route = ReactRouter.Route;
-var RouteHandler = ReactRouter.RouteHandler;
-var DefaultRoute = ReactRouter.DefaultRoute;
+import IndexPage from 'pages/IndexPage';
 
-var App = React.createClass({
-  render: function() {
+class App extends React.Component {
+  render() {
     return (
       <div>
-        <RouteHandler />
+        {this.props.children}
       </div>
     );
   }
-});
+}
 
-var routes = (
-  <Route path="/" handler={App}>
-    <DefaultRoute handler={IndexPage} />
-    <Route path="t/:id" handler={IndexPage} />
+var Routes = (
+  <Route path="/" component={App}>
+    <Route path="t/:id" component={IndexPage} />
+    <IndexRoute component={IndexPage} />
+    <Route path="*" component={IndexPage} />
   </Route>
 );
 
-ReactRouter.run(routes, ReactRouter.HistoryLocation, function (Root) {
-  React.render(<Root />, document.getElementById('container'));
-});
+ReactDOM.render(
+  <Router routes={Routes} history={browserHistory} />,
+  document.getElementById('container')
+);
 
-// How to use zepto
-var $ = require('zepto');
+var $ = require('jquery');
 console.log($);
